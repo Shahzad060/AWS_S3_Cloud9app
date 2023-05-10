@@ -1,0 +1,30 @@
+package au.edu.scu.app;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
+import software.amazon.awssdk.services.s3.model.S3Request;
+import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
+import software.amazon.awssdk.core.sync.RequestBody;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.FileSystems;
+
+public class App 
+{
+    public static S3Client s3;
+    
+    public static void main( String[] args ) throws IOException
+    {
+        String bucket = "syedab10-a1-bucket";
+        String key = "home.html";
+        Region region = Region.US_EAST_1;
+        s3 = S3Client.builder().region(region).build();
+        
+        Path path = FileSystems.getDefault().getPath("temp.txt");
+        GetObjectRequest req =
+            GetObjectRequest.builder().bucket(bucket).key(key).build();
+        GetObjectResponse resp = s3.getObject(req, path);
+        
+    }
+}
